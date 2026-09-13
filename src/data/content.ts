@@ -54,7 +54,7 @@ export const projects = [
       'Una app móvil Android que centraliza todas las variables de costeo y calcula precio y margen al instante, con parámetros reutilizables y una interfaz clara pensada para uso diario.',
     result:
       'Reemplaza el cálculo manual por un flujo consistente y repetible: menos margen de error y precios listos al instante a partir de parámetros reutilizables.',
-    repo: '' as string,
+    repo: 'https://github.com/Luisesg1/Calculadora-3D' as string,
     images: [
       '/projects/calc3d-1.webp',
       '/projects/calc3d-2.webp',
@@ -81,7 +81,7 @@ export const projects = [
       'Una plataforma web con autenticación, roles y permisos granulares, módulos de inventario y gestión, respaldada por una API REST y una base de datos relacional.',
     result:
       'Unificó la operación en un solo sistema con control de acceso por rol, dando estructura y trazabilidad a procesos que antes eran manuales.',
-    repo: '' as string,
+    repo: 'https://github.com/Luisesg1/inventario-liceo' as string,
     images: [
       '/projects/gestion-1.webp',
       '/projects/gestion-2.webp',
@@ -162,7 +162,7 @@ export const projects = [
       'App web de gestión de cotizaciones: CRUD de clientes, cálculo automático de subtotal/IVA/total, numeración diaria (AAMMDD-N), PDF profesional de una página con firma digital y datos bancarios, historial con búsqueda y duplicado, y configuración de la empresa. Autenticación con recuperación de contraseña.',
     result:
       'Sistema completo de punta a punta: genera cotizaciones en segundos con formato consistente, respaldo centralizado en la nube y PDF listo para enviar. Incluye modo demo sin backend.',
-    repo: '' as string,
+    repo: 'https://github.com/Luisesg1/sistema-cotizacion' as string,
     images: [
       '/projects/cotiza-1.webp',
       '/projects/cotiza-3.webp',
