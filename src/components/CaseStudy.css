@@ -703,6 +703,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
+  margin-top: clamp(24px, 4vw, 40px);
   font-family: var(--font-mono);
   font-size: 14px;
   letter-spacing: 0.08em;
@@ -759,7 +760,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-top: 16px;
 }
 .cs__link {
   display: inline-flex;
