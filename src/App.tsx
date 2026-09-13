@@ -37,6 +37,24 @@ import { Hud } from './components/Hud'
 import './styles/sections.css'
 
 export default function App() {
+  // Notify (Telegram) on a real visit — once per session, skip localhost/bots.
+  // The endpoint is dormant unless its env vars are set on the server.
+  useEffect(() => {
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return
+    try {
+      if (sessionStorage.getItem('v-pinged')) return
+      sessionStorage.setItem('v-pinged', '1')
+    } catch {
+      /* ignore */
+    }
+    fetch('/api/visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: document.referrer || '', page: location.pathname + location.hash }),
+      keepalive: true,
+    }).catch(() => {})
+  }, [])
+
   return (
     <>
       <a href="#main" className="skip-link">Saltar al contenido</a>

@@ -1,0 +1,80 @@
+// Serverless notifier: pings a Telegram chat when someone visits the site.
+// Dormant unless TELEGRAM_TOKEN + TELEGRAM_CHAT_ID are set (Vercel env vars,
+// server-side only — never shipped to the browser). Geo comes free from
+// Vercel's edge headers; no IP is stored anywhere.
+
+const BOT_UA = /bot|crawl|spider|slurp|bing|google|facebook|embed|preview|lighthouse|headless|monitor|pingdom|uptime/i
+
+function flag(cc) {
+  if (!cc || cc.length !== 2) return ''
+  return String.fromCodePoint(...[...cc.toUpperCase()].map((c) => 127397 + c.charCodeAt(0)))
+}
+
+function device(ua = '') {
+  if (/mobile|iphone|android/i.test(ua) && !/ipad|tablet/i.test(ua)) return '📱 Móvil'
+  if (/ipad|tablet/i.test(ua)) return '📱 Tablet'
+  return '💻 Escritorio'
+}
+
+function browser(ua = '') {
+  if (/edg/i.test(ua)) return 'Edge'
+  if (/opr|opera|opgx/i.test(ua)) return 'Opera'
+  if (/chrome|crios/i.test(ua)) return 'Chrome'
+  if (/firefox|fxios/i.test(ua)) return 'Firefox'
+  if (/safari/i.test(ua)) return 'Safari'
+  return 'Navegador'
+}
+
+export default async function handler(req, res) {
+  // never block the visitor: respond OK no matter what
+  try {
+    if (req.method !== 'POST') return res.status(405).end()
+
+    const TOKEN = process.env.TELEGRAM_TOKEN
+    const CHAT = process.env.TELEGRAM_CHAT_ID
+    if (!TOKEN || !CHAT) return res.status(200).json({ ok: true, dormant: true })
+
+    // only accept pings coming from the site itself (casual-abuse guard)
+    const origin = req.headers.origin || req.headers.referer || ''
+    if (!/luisesg\.com|localhost|\.vercel\.app/i.test(origin)) {
+      return res.status(200).json({ ok: true, skipped: 'origin' })
+    }
+
+    const ua = req.headers['user-agent'] || ''
+    if (BOT_UA.test(ua)) return res.status(200).json({ ok: true, skipped: 'bot' })
+
+    const country = req.headers['x-vercel-ip-country'] || ''
+    const city = decodeURIComponent(req.headers['x-vercel-ip-city'] || '') || 'Desconocida'
+    const body = typeof req.body === 'object' ? req.body : {}
+    let ref = (body.ref || req.headers.referer || '').toString()
+    try {
+      ref = ref ? new URL(ref).hostname.replace(/^www\./, '') : ''
+    } catch {
+      ref = ''
+    }
+    if (/luisesg\.com/i.test(ref)) ref = '' // internal navigation
+    const source = ref || 'directo'
+    const time = new Date().toLocaleString('es-CL', {
+      timeZone: 'America/Santiago',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+
+    const text =
+      `👀 *Nueva visita* — luisesg.com\n` +
+      `📍 ${city}, ${country || '??'} ${flag(country)}\n` +
+      `${device(ua)} · ${browser(ua)}\n` +
+      `🔗 ${source}\n` +
+      `⏰ ${time}`
+
+    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT, text, parse_mode: 'Markdown' }),
+    })
+
+    return res.status(200).json({ ok: true })
+  } catch {
+    return res.status(200).json({ ok: true, error: true })
+  }
+}
