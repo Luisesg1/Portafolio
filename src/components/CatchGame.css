@@ -695,7 +695,7 @@
   }
   .cg__lbbtn {
     width: 100%;
-    padding: 0.75em 1em;
+    font-size: 13px;
   }
 }
 .cg__lbfield {
@@ -735,16 +735,17 @@
 }
 .cg__lbbtn {
   flex: none;
-  padding: 0 1em;
+  padding: 0.95em 1.2em;
   border-radius: 10px;
   border: 1px solid transparent;
   background: linear-gradient(100deg, var(--violet), color-mix(in srgb, var(--violet) 70%, var(--cyan, #22d3ee)));
   color: #fff;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
+  box-shadow: 0 8px 22px -10px rgba(128, 82, 255, 0.75);
   transition: filter 0.25s ease, opacity 0.25s ease;
 }
 .cg__lbbtn:hover:not(:disabled) {
