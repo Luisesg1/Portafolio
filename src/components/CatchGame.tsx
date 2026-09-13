@@ -4,7 +4,7 @@ import { useT } from '../i18n/i18n'
 import { hasLeaderboard, getTop, getRank, submitScore, MAX_NAME, type ScoreRow } from '../lib/leaderboard'
 import './CatchGame.css'
 
-type Phase = 'idle' | 'count' | 'playing' | 'over'
+type Phase = 'idle' | 'count' | 'playing' | 'ending' | 'over'
 type Heart = { id: number; x: number; y: number }
 type Ripple = { id: number; x: number; y: number }
 type Spot = { x: number; y: number; size: number }
@@ -48,6 +48,7 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
   const hopRef = useRef<number | undefined>(undefined)
   const tickRef = useRef<number | undefined>(undefined)
   const countRef = useRef<number | undefined>(undefined)
+  const endRef = useRef<number | undefined>(undefined)
   const heartId = useRef(0)
   const scoreRef = useRef(0)
   const curSpot = useRef<Spot | null>(null)
@@ -60,6 +61,7 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
     window.clearTimeout(hopRef.current)
     window.clearInterval(tickRef.current)
     window.clearInterval(countRef.current)
+    window.clearTimeout(endRef.current)
   }
 
   // Move Tito to a fresh random spot inside the board, then schedule the next
@@ -139,7 +141,10 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
         if (v <= 1) {
           window.clearInterval(tickRef.current)
           window.clearTimeout(hopRef.current)
-          setPhase('over')
+          // "time's up" splash first (no buttons), then reveal the full over
+          // screen — stops an accidental "play again" tap from skipping submit
+          setPhase('ending')
+          endRef.current = window.setTimeout(() => setPhase('over'), 3000)
           setBest((b) => {
             const nb = Math.max(b, scoreRef.current)
             try {
@@ -198,7 +203,7 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const isRecord = phase === 'over' && score > 0 && score >= best
+  const isRecord = (phase === 'over' || phase === 'ending') && score > 0 && score >= best
 
   // The full ordered board with the player's slot woven in (a dashed "ghost" at
   // their rank before submitting, a solid highlighted row after). From this we
@@ -255,9 +260,12 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
   // when a run ends, load the board and work out where this score would land,
   // so we can preview the ranking with the player's provisional slot
   useEffect(() => {
-    if (phase !== 'over' || !hasLeaderboard || score <= 0) {
-      setRank(null)
-      setTop([])
+    // fetch during the "ending" splash so the board is ready when "over" shows
+    if (phase !== 'ending' || !hasLeaderboard || score <= 0) {
+      if (phase === 'idle' || phase === 'count' || phase === 'playing') {
+        setRank(null)
+        setTop([])
+      }
       return
     }
     let alive = true
@@ -408,7 +416,7 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {phase === 'over' && (
+          {(phase === 'ending' || phase === 'over') && (
             <div className="cg__overlay cg__overlay--over">
               <span className={`cg__medal ${isRecord ? 'is-record' : ''}`} aria-hidden>
                 <svg className="cg__trophy" viewBox="0 0 64 64">
@@ -435,7 +443,9 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
               </div>
               {isRecord && <span className="cg__newbest">✦ {t.game.newBest} ✦</span>}
 
-              {hasLeaderboard && score > 0 && (
+              {phase === 'ending' && <span className="cg__ending-wait" aria-hidden />}
+
+              {phase === 'over' && hasLeaderboard && score > 0 && (
                 <div className="cg__lb">
                   {submitState !== 'done' && rank !== null && (
                     <span className="cg__rankline">
@@ -516,9 +526,11 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
                 </div>
               )}
 
-              <button className="cg__btn cg__btn--primary" onClick={start} data-cursor="link">
-                {t.game.again} <span aria-hidden>↺</span>
-              </button>
+              {phase === 'over' && (
+                <button className="cg__btn cg__btn--primary" onClick={start} data-cursor="link">
+                  {t.game.again} <span aria-hidden>↺</span>
+                </button>
+              )}
             </div>
           )}
         </div>

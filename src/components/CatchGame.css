@@ -549,6 +549,30 @@
 .cg__bigscore em {
   color: var(--ink-45);
 }
+/* transient "time's up" splash — dots while the full over screen loads in */
+.cg__ending-wait {
+  display: block;
+  margin-top: 4px;
+}
+.cg__ending-wait::before {
+  content: '•••';
+  letter-spacing: 5px;
+  font-size: 22px;
+  color: var(--violet);
+  animation: cg-wait 1.1s ease-in-out infinite;
+}
+@keyframes cg-wait {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.is-reduced .cg__ending-wait::before {
+  animation: none;
+}
 .cg__over {
   font-size: clamp(20px, 4vw, 28px);
   font-weight: 700;
