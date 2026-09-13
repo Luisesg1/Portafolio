@@ -640,6 +640,33 @@
   gap: 10px;
   margin: 4px 0 2px;
 }
+/* choose which score to submit: this run, or your saved personal best */
+.cg__pick {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--ink-10);
+}
+.cg__pick-opt {
+  flex: 1;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink-45);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.cg__pick-opt.is-on {
+  background: color-mix(in srgb, var(--violet) 22%, transparent);
+  color: var(--ink);
+}
 .cg__rankline {
   font-size: 15px;
   color: var(--ink-70);

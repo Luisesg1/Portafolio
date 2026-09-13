@@ -40,6 +40,7 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [top, setTop] = useState<ScoreRow[]>([])
   const [rank, setRank] = useState<number | null>(null)
+  const [pick, setPick] = useState<'run' | 'best'>('run')
   const [showFull, setShowFull] = useState(false)
   const [showBoard, setShowBoard] = useState(false)
   const [count, setCount] = useState(3)
@@ -106,6 +107,7 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
     clearTimers()
     setShowBoard(false)
     setSubmitState('idle')
+    setPick('run')
     setHearts([])
     setRipples([])
     setScore(0)
@@ -205,24 +207,29 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
 
   const isRecord = (phase === 'over' || phase === 'ending') && score > 0 && score >= best
 
+  // the score being submitted: the current run, or the saved personal best when
+  // it's higher and the player opts to submit that instead
+  const canPickBest = best > score
+  const chosen = canPickBest && pick === 'best' ? best : score
+
   // The full ordered board with the player's slot woven in (a dashed "ghost" at
   // their rank before submitting, a solid highlighted row after). From this we
   // derive two views: a compact window around the player, or the full Top 10.
   type Row = { pos: number; name: string; score: number; you: boolean; ghost: boolean; divider?: boolean }
   let fullRows: Row[] = []
-  if (hasLeaderboard && score > 0) {
+  if (hasLeaderboard && chosen > 0) {
     const youName = name.trim() || t.game.you
     if (submitState === 'done') {
       let marked = false
       fullRows = top.map((r) => {
-        const you = !marked && r.score === score && r.name === youName
+        const you = !marked && r.score === chosen && r.name === youName
         if (you) marked = true
         return { pos: 0, name: r.name, score: r.score, you, ghost: false }
       })
     } else if (rank !== null) {
       const base: Row[] = top.map((r) => ({ pos: 0, name: r.name, score: r.score, you: false, ghost: false }))
       const insertAt = Math.min(base.length, rank - 1)
-      base.splice(insertAt, 0, { pos: 0, name: youName, score, you: true, ghost: true })
+      base.splice(insertAt, 0, { pos: 0, name: youName, score: chosen, you: true, ghost: true })
       fullRows = base
     }
     fullRows = fullRows.map((r, i) => ({ ...r, pos: i + 1 }))
@@ -257,20 +264,19 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
     return () => window.clearTimeout(to)
   }, [isRecord])
 
-  // when a run ends, load the board and work out where this score would land,
-  // so we can preview the ranking with the player's provisional slot
+  // load the board + where `chosen` would land. Fetched during the "ending"
+  // splash and refetched if the player toggles run/record on the over screen.
   useEffect(() => {
-    // fetch during the "ending" splash so the board is ready when "over" shows
-    if (phase !== 'ending' || !hasLeaderboard || score <= 0) {
+    if ((phase !== 'ending' && phase !== 'over') || !hasLeaderboard || chosen <= 0) {
       if (phase === 'idle' || phase === 'count' || phase === 'playing') {
         setRank(null)
         setTop([])
       }
       return
     }
+    if (phase === 'ending') setShowFull(false)
     let alive = true
-    setShowFull(false)
-    Promise.all([getTop(50), getRank(score)])
+    Promise.all([getTop(50), getRank(chosen)])
       .then(([rows, r]) => {
         if (!alive) return
         setTop(rows)
@@ -280,14 +286,14 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
     return () => {
       alive = false
     }
-  }, [phase, score])
+  }, [phase, chosen])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (submitState === 'sending' || !name.trim() || score <= 0) return
+    if (submitState === 'sending' || !name.trim() || chosen <= 0) return
     setSubmitState('sending')
     try {
-      await submitScore(name, score)
+      await submitScore(name, chosen)
       const rows = await getTop(10)
       setTop(rows)
       setSubmitState('done')
@@ -447,6 +453,24 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
 
               {phase === 'over' && hasLeaderboard && score > 0 && (
                 <div className="cg__lb">
+                  {canPickBest && submitState !== 'done' && (
+                    <div className="cg__pick" role="group" aria-label={t.game.submitScore}>
+                      <button
+                        className={`cg__pick-opt ${pick === 'run' ? 'is-on' : ''}`}
+                        onClick={() => setPick('run')}
+                        type="button"
+                      >
+                        {t.game.thisRun} · {score}
+                      </button>
+                      <button
+                        className={`cg__pick-opt ${pick === 'best' ? 'is-on' : ''}`}
+                        onClick={() => setPick('best')}
+                        type="button"
+                      >
+                        {t.game.myBest} · {best}
+                      </button>
+                    </div>
+                  )}
                   {submitState !== 'done' && rank !== null && (
                     <span className="cg__rankline">
                       {t.game.youRank} <b>#{rank}</b>
