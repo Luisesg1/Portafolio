@@ -215,7 +215,7 @@ export const dict = {
           problem: 'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
           solution: 'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
           result: 'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
-          implementation: 'App Android nativa en Kotlin y Jetpack Compose (Material 3). Registra sesiones, calcula records y 1RM, detecta músculos poco trabajados e integra un coach de IA (BRUX) que analiza el historial y responde en lenguaje natural, más un sistema de logros y rachas.',
+          implementation: 'App construida con React + Vite y empaquetada como app Android con Capacitor; backend en Firebase (Firestore + Cloud Functions). Registra sesiones, calcula records y 1RM, detecta músculos poco trabajados e integra un coach de IA (BRUX) que analiza el historial y responde en lenguaje natural, más logros y rachas.',
           features: [
             'Registro de series, PRs y RPE',
             'Cálculo de records y 1RM',
@@ -572,7 +572,7 @@ export const dict = {
           problem: 'Tracking the gym —sets, PRs, RPE, per-muscle volume— by hand or in notes is tedious and gives no useful feedback to progress.',
           solution: 'An Android app that logs sessions, computes records and 1RM, flags undertrained muscles and adds an AI coach (BRUX) that analyzes your history and answers in natural language, with achievements and streaks to keep you consistent.',
           result: 'Turns workout logging into actionable data —PRs, insights and recommendations— with a gamification layer that keeps users coming back.',
-          implementation: 'A native Android app in Kotlin and Jetpack Compose (Material 3). It logs sessions, computes records and 1RM, flags undertrained muscles and integrates an AI coach (BRUX) that analyzes your history and answers in natural language, plus achievements and streaks.',
+          implementation: 'Built with React + Vite and shipped as an Android app via Capacitor; a Firebase backend (Firestore + Cloud Functions). It logs sessions, computes records and 1RM, flags undertrained muscles and integrates an AI coach (BRUX) that analyzes your history and answers in natural language, plus achievements and streaks.',
           features: [
             'Logging of sets, PRs and RPE',
             'Records and 1RM calculation',

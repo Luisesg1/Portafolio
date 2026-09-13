@@ -123,18 +123,18 @@ export const projects = [
     title: 'Beast',
     category: 'Fitness App',
     desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
-    tech: ['Kotlin', 'Jetpack Compose', 'IA'],
+    tech: ['React', 'Firebase', 'IA'],
     accent: 'var(--cyan)',
     year: '2026',
     role: 'Mobile Developer',
-    stack: ['Kotlin', 'Jetpack Compose', 'Material 3', 'IA'],
+    stack: ['React', 'Vite', 'Capacitor', 'Firebase', 'IA'],
     problem:
       'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
     solution:
       'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
     result:
       'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
-    repo: '' as string,
+    repo: 'https://github.com/Luisesg1/gym-app' as string,
     images: [
       '/projects/beast-1.webp',
       '/projects/beast-5.webp',
