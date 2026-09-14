@@ -31,6 +31,7 @@ Thumbs.db
 
 # internal dev notes (kept locally, not published)
 .claude
+plantillas/
 HANDOFF.md
 HANDOFF-*.md
 PROMPT-*.md

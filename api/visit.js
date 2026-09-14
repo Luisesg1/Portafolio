@@ -38,6 +38,29 @@ function human(seconds = 0) {
   return `${m}m ${s % 60}s`
 }
 
+// Best-effort log to Supabase (for the daily summary). Server-side only, uses
+// the service-role key (never shipped to the browser); no IP is stored.
+// Silent no-op if the env vars aren't set — keeps the endpoint dormant.
+async function logEvent(row) {
+  const BASE = process.env.VITE_SUPABASE_URL
+  const KEY = process.env.SUPABASE_SERVICE_ROLE
+  if (!BASE || !KEY) return
+  try {
+    await fetch(`${BASE}/rest/v1/events`, {
+      method: 'POST',
+      headers: {
+        apikey: KEY,
+        Authorization: `Bearer ${KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      },
+      body: JSON.stringify(row),
+    })
+  } catch {
+    /* logging must never break the response */
+  }
+}
+
 export default async function handler(req, res) {
   // never block the visitor: respond OK no matter what
   try {
@@ -143,11 +166,31 @@ export default async function handler(req, res) {
       ].join('\n')
     }
 
-    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: CHAT, text, parse_mode: 'Markdown' }),
-    })
+    // record for the daily summary (best-effort, no IP)
+    const meta = {}
+    if (lang) meta.lang = lang
+    if (utm) meta.utm = utm
+    if (body.returning) meta.returning = body.returning
+    if (body.name) meta.name = clean(body.name, 60)
+    if (body.ptype) meta.ptype = clean(body.ptype, 40)
+    if (body.seconds != null) meta.seconds = Math.max(0, Math.round(Number(body.seconds) || 0))
+    if (body.projects) meta.projects = clean(body.projects, 200)
+    const row = {
+      event: clean(body.event, 40) || 'visit',
+      label: clean(body.label, 60) || null,
+      country: country || null,
+      city: city === 'Desconocida' ? null : city,
+      meta,
+    }
+
+    await Promise.allSettled([
+      fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT, text, parse_mode: 'Markdown' }),
+      }),
+      logEvent(row),
+    ])
 
     return res.status(200).json({ ok: true })
   } catch {
