@@ -2,6 +2,14 @@
 // and send one Telegram summary. Wired via the "crons" entry in vercel.json.
 // Dormant unless TELEGRAM_* + Supabase service-role env vars are all set.
 
+// Works with new secret keys (sb_secret_…, apikey only) and legacy
+// service_role JWTs (also sent as Bearer).
+function supaAuth(key) {
+  const h = { apikey: key }
+  if (/^eyJ/.test(key)) h.Authorization = `Bearer ${key}`
+  return h
+}
+
 function topCounts(map, n = 5) {
   return Object.entries(map)
     .sort((a, b) => b[1] - a[1])
@@ -30,9 +38,9 @@ export default async function handler(req, res) {
     const url =
       `${BASE}/rest/v1/events?select=event,label,country,meta,created_at` +
       `&created_at=gte.${since}&order=created_at.asc&limit=5000`
-    const rows = await fetch(url, {
-      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
-    }).then((r) => (r.ok ? r.json() : []))
+    const rows = await fetch(url, { headers: supaAuth(KEY) }).then((r) =>
+      r.ok ? r.json() : []
+    )
 
     let visits = 0
     let nuevos = 0

@@ -38,8 +38,17 @@ function human(seconds = 0) {
   return `${m}m ${s % 60}s`
 }
 
+// Supabase auth headers. Works with both key styles: the new secret keys
+// (sb_secret_…, not JWTs) authenticate via the apikey header only, while the
+// legacy service_role key (a JWT) is also passed as a Bearer token.
+function supaAuth(key) {
+  const h = { apikey: key }
+  if (/^eyJ/.test(key)) h.Authorization = `Bearer ${key}`
+  return h
+}
+
 // Best-effort log to Supabase (for the daily summary). Server-side only, uses
-// the service-role key (never shipped to the browser); no IP is stored.
+// the service-role/secret key (never shipped to the browser); no IP is stored.
 // Silent no-op if the env vars aren't set — keeps the endpoint dormant.
 async function logEvent(row) {
   const BASE = process.env.VITE_SUPABASE_URL
@@ -49,8 +58,7 @@ async function logEvent(row) {
     await fetch(`${BASE}/rest/v1/events`, {
       method: 'POST',
       headers: {
-        apikey: KEY,
-        Authorization: `Bearer ${KEY}`,
+        ...supaAuth(KEY),
         'Content-Type': 'application/json',
         Prefer: 'return=minimal',
       },
