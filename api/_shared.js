@@ -22,11 +22,13 @@ export async function sendTelegram(TOKEN, CHAT, text, extra = {}) {
   })
 }
 
-/** Fetch events newer than `sinceISO` (ascending). Returns [] on any error. */
-export async function loadEvents(BASE, KEY, sinceISO) {
+/** Fetch events in [sinceISO, untilISO) (ascending). Returns [] on any error.
+ *  `untilISO` is optional — omit it for "everything since". */
+export async function loadEvents(BASE, KEY, sinceISO, untilISO) {
+  const until = untilISO ? `&created_at=lt.${untilISO}` : ''
   const url =
     `${BASE}/rest/v1/events?select=event,label,country,meta,created_at` +
-    `&created_at=gte.${sinceISO}&order=created_at.asc&limit=5000`
+    `&created_at=gte.${sinceISO}${until}&order=created_at.asc&limit=5000`
   try {
     const r = await fetch(url, { headers: supaAuth(KEY) })
     return r.ok ? r.json() : []

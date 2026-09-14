@@ -61,12 +61,15 @@ export default async function handler(req, res) {
     if (cmd === '/hoy') {
       const rows = await loadEvents(BASE, KEY, sinceISO(DAY))
       reply = renderDigest('📊 *Hoy* · luisesg.com', '🗓️ últimas 24h', rows)
+    } else if (cmd === '/ayer') {
+      const rows = await loadEvents(BASE, KEY, sinceISO(2 * DAY), sinceISO(DAY))
+      reply = renderDigest('📊 *Ayer* · luisesg.com', '🗓️ hace 24–48h', rows)
     } else if (cmd === '/semana') {
       const rows = await loadEvents(BASE, KEY, sinceISO(7 * DAY))
       reply = renderDigest('📊 *Semana* · luisesg.com', '🗓️ últimos 7 días', rows)
-    } else if (cmd === '/stats') {
+    } else if (cmd === '/mes' || cmd === '/stats') {
       const rows = await loadEvents(BASE, KEY, sinceISO(30 * DAY))
-      reply = renderDigest('📊 *Stats* · luisesg.com', '🗓️ últimos 30 días', rows)
+      reply = renderDigest('📊 *Mes* · luisesg.com', '🗓️ últimos 30 días', rows)
     } else if (cmd === '/leads') {
       const rows = await loadEvents(BASE, KEY, sinceISO(30 * DAY))
       const { leads } = summarize(rows)
@@ -82,9 +85,10 @@ export default async function handler(req, res) {
     } else {
       reply = [
         '🤖 *Comandos*',
-        '/hoy — resumen de las últimas 24h',
+        '/hoy — últimas 24h',
+        '/ayer — el día anterior (24–48h)',
         '/semana — últimos 7 días',
-        '/stats — últimos 30 días',
+        '/mes — últimos 30 días',
         '/leads — leads del formulario (30 días)',
       ].join('\n')
     }
