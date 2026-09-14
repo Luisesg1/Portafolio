@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
 import { useT } from '../i18n/i18n'
 import { hasLeaderboard, getTop, getRank, submitScore, MAX_NAME, type ScoreRow } from '../lib/leaderboard'
-import { track } from '../lib/track'
+import { track, notify } from '../lib/track'
 import './CatchGame.css'
 
 type Phase = 'idle' | 'count' | 'playing' | 'ending' | 'over'
@@ -296,6 +296,8 @@ export function CatchGame({ onClose }: { onClose: () => void }) {
     setSubmitState('sending')
     try {
       await submitScore(name, chosen)
+      // #1 on the board → ping Telegram with a new-record alert
+      if (rank === 1) notify('game_record', `${name.trim()} · ${chosen} pts`)
       const rows = await getTop(10)
       setTop(rows)
       setSubmitState('done')

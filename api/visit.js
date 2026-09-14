@@ -3,6 +3,8 @@
 // server-side only — never shipped to the browser). Geo comes free from
 // Vercel's edge headers; no IP is stored anywhere.
 
+import { countSince } from './_shared.js'
+
 const BOT_UA = /bot|crawl|spider|slurp|bing|google|facebook|embed|preview|lighthouse|headless|monitor|pingdom|uptime/i
 
 function flag(cc) {
@@ -113,6 +115,8 @@ export default async function handler(req, res) {
       .join('\n')
 
     let text
+    const buttons = [] // inline_keyboard rows (tap-to-act on high-intent alerts)
+    let firstLeadToday = false
     if (body.event === 'session_summary') {
       const dur = human(body.seconds)
       const seen = clean(body.projects, 200)
@@ -126,6 +130,18 @@ export default async function handler(req, res) {
     } else if (body.event) {
       // high-intent action alert, with context
       const label = clean(body.label, 60)
+
+      // Milestone: is this the first form lead in the last 24h?
+      if (body.event === 'contact_submit') {
+        const B = process.env.VITE_SUPABASE_URL
+        const K = process.env.SUPABASE_SERVICE_ROLE
+        if (B && K) {
+          const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+          const prior = await countSince(B, K, 'contact_submit', since)
+          if (prior === 0) firstLeadToday = true
+        }
+      }
+
       let headline
       switch (body.event) {
         case 'project_open':
@@ -138,14 +154,29 @@ export default async function handler(req, res) {
           const name = clean(body.name, 60)
           const ptype = clean(body.ptype, 40)
           headline = [
+            firstLeadToday ? `🥇 *PRIMER LEAD DEL DÍA*` : '',
             `✉️🔥 *Formulario enviado* — LEAD CALIENTE`,
             name ? `👤 ${name}` : '',
             ptype ? `🗂️ ${ptype}` : '',
           ]
             .filter(Boolean)
             .join('\n')
+          // tap-to-reply button (Gmail compose to the lead's address)
+          const email = clean(body.email, 120)
+          if (email && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+            const su = encodeURIComponent(`Re: tu mensaje en luisesg.com${ptype ? ` — ${ptype}` : ''}`)
+            buttons.push([
+              {
+                text: '✉️ Responder por correo',
+                url: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${su}`,
+              },
+            ])
+          }
           break
         }
+        case 'game_record':
+          headline = `🏆 *¡Nuevo récord en el minijuego!*${label ? `\n🎮 ${label}` : ''}`
+          break
         case 'whatsapp_click':
           headline = `💬 *Click en tu WhatsApp*`
           break
@@ -191,11 +222,14 @@ export default async function handler(req, res) {
       meta,
     }
 
+    const tgBody = { chat_id: CHAT, text, parse_mode: 'Markdown' }
+    if (buttons.length) tgBody.reply_markup = { inline_keyboard: buttons }
+
     await Promise.allSettled([
       fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT, text, parse_mode: 'Markdown' }),
+        body: JSON.stringify(tgBody),
       }),
       logEvent(row),
     ])

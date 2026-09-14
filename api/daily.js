@@ -2,19 +2,7 @@
 // and send one Telegram summary. Wired via the "crons" entry in vercel.json.
 // Dormant unless TELEGRAM_* + Supabase service-role env vars are all set.
 
-// Works with new secret keys (sb_secret_…, apikey only) and legacy
-// service_role JWTs (also sent as Bearer).
-function supaAuth(key) {
-  const h = { apikey: key }
-  if (/^eyJ/.test(key)) h.Authorization = `Bearer ${key}`
-  return h
-}
-
-function topCounts(map, n = 5) {
-  return Object.entries(map)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, n)
-}
+import { supaAuth, sendTelegram, loadEvents, renderDigest } from './_shared.js'
 
 export default async function handler(req, res) {
   try {
@@ -35,47 +23,7 @@ export default async function handler(req, res) {
     }
 
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-    const url =
-      `${BASE}/rest/v1/events?select=event,label,country,meta,created_at` +
-      `&created_at=gte.${since}&order=created_at.asc&limit=5000`
-    const rows = await fetch(url, { headers: supaAuth(KEY) }).then((r) =>
-      r.ok ? r.json() : []
-    )
-
-    let visits = 0
-    let nuevos = 0
-    let recurrentes = 0
-    let cv = 0
-    let wa = 0
-    const projects = {}
-    const countries = {}
-    const leads = [] // contact_submit: {name, ptype}
-
-    for (const row of rows) {
-      const m = row.meta || {}
-      switch (row.event) {
-        case 'visit':
-          visits++
-          if (m.returning === 'returning') recurrentes++
-          else nuevos++
-          if (row.country) countries[row.country] = (countries[row.country] || 0) + 1
-          break
-        case 'project_open':
-          if (row.label) projects[row.label] = (projects[row.label] || 0) + 1
-          break
-        case 'cv_download':
-          cv++
-          break
-        case 'contact_submit':
-          leads.push({ name: m.name || '¿?', ptype: m.ptype || '' })
-          break
-        case 'whatsapp_click':
-          wa++
-          break
-        default:
-          break
-      }
-    }
+    const rows = await loadEvents(BASE, KEY, since)
 
     const day = new Date().toLocaleDateString('es-CL', {
       timeZone: 'America/Santiago',
@@ -83,44 +31,8 @@ export default async function handler(req, res) {
       day: '2-digit',
       month: 'long',
     })
-
-    const lines = [`📊 *Resumen diario* · luisesg.com`, `🗓️ ${day} · últimas 24h`, '']
-
-    if (rows.length === 0) {
-      lines.push('😴 Sin actividad en las últimas 24h.')
-    } else {
-      lines.push(`👀 *${visits}* visitas · 🆕 ${nuevos} nuevas · 🔁 ${recurrentes} recurrentes`)
-
-      const topC = topCounts(countries, 4)
-      if (topC.length) {
-        lines.push('🌎 ' + topC.map(([c, n]) => `${c} ${n}`).join(' · '))
-      }
-
-      const topP = topCounts(projects, 5)
-      if (topP.length) {
-        lines.push('')
-        lines.push('🔥 *Proyectos abiertos:*')
-        for (const [p, n] of topP) lines.push(`   • ${p} — ${n}`)
-      }
-
-      lines.push('')
-      lines.push(`📄 CV descargado: *${cv}*`)
-      if (wa) lines.push(`💬 Clicks WhatsApp: *${wa}*`)
-
-      if (leads.length) {
-        lines.push('')
-        lines.push(`✉️🔥 *${leads.length} lead(s) del formulario:*`)
-        for (const l of leads.slice(0, 10)) {
-          lines.push(`   • ${l.name}${l.ptype ? ` — ${l.ptype}` : ''}`)
-        }
-      }
-    }
-
-    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: CHAT, text: lines.join('\n'), parse_mode: 'Markdown' }),
-    })
+    const text = renderDigest('📊 *Resumen diario* · luisesg.com', `🗓️ ${day} · últimas 24h`, rows)
+    await sendTelegram(TOKEN, CHAT, text)
 
     // Housekeeping: prune events older than the retention window. Keeps the
     // table small and drops old lead PII (data minimization). Best-effort.
