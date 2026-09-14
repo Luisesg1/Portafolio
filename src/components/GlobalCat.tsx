@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import './GlobalCat.css'
 
-const CAT_SHEET = '/cat-walk.png' // served from public/
+const CAT_SHEET = '/cat-walk.webp' // served from public/
 
 /**
  * The AI-generated sprite sheet has stray specks/noise floating in the

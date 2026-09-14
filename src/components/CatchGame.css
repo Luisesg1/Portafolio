@@ -297,7 +297,7 @@
   z-index: 1;
   padding: 0;
   border: 0;
-  background: url('/cat-walk.png') no-repeat 0 0;
+  background: url('/cat-walk.webp') no-repeat 0 0;
   background-size: 400% 100%; /* 4-frame sheet → frame 0 */
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6))
     drop-shadow(0 0 14px rgba(128, 82, 255, 0.55));
@@ -469,7 +469,7 @@
 .cg__peek {
   width: 96px;
   height: 108px;
-  background: url('/cat-walk.png') no-repeat 0 0;
+  background: url('/cat-walk.webp') no-repeat 0 0;
   background-size: 400% 100%;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6))
     drop-shadow(0 0 18px rgba(128, 82, 255, 0.5));
