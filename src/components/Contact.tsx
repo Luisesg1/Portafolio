@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Reveal, MaskLine } from './Reveal'
 import { Github, Linkedin, Mail, MessageCircle, Check } from 'lucide-react'
+import { track, notify } from '../lib/track'
 import { ParticleField } from './ParticleField'
 import { Magnetic } from './Magnetic'
 import { useT } from '../i18n/i18n'
@@ -63,6 +64,7 @@ function ContactForm() {
       const data = await res.json()
       if (data.success) {
         setStatus('sent')
+        notify('contact_submit')
         setName('')
         setEmail('')
         setMessage('')
@@ -258,6 +260,7 @@ export function Contact() {
                 download="Luis-Eduardo-Soto-Gutierrez-CV.pdf"
                 className="contact__cv"
                 data-cursor="link"
+                onClick={() => notify('cv_download')}
               >
                 <span className="contact__cv-label">{t.contact.cv}</span>
                 <span className="contact__cv-arrow" aria-hidden>↓</span>
@@ -288,6 +291,11 @@ export function Contact() {
                 rel="noreferrer"
                 className="chan"
                 data-cursor="link"
+                onClick={() =>
+                  c.label === 'WhatsApp'
+                    ? notify('whatsapp_click')
+                    : track('social_click', { network: c.label })
+                }
               >
                 <c.icon size={18} strokeWidth={1.6} className="chan__icon" />
                 <span className="chan__label meta">{c.label}</span>

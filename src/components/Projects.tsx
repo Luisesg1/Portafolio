@@ -5,6 +5,7 @@ import { Reveal, MaskLine } from './Reveal'
 import { OutlineText } from './OutlineText'
 import { projects } from '../data/content'
 import { useT } from '../i18n/i18n'
+import { notify } from '../lib/track'
 
 // The case-study modal (with the phone showcase + image viewer) is heavy and
 // only opens on click — load its chunk on demand to keep the initial bundle lean.
@@ -123,6 +124,10 @@ function Mockup({
 export function Projects() {
   const t = useT()
   const [active, setActive] = useState<number | null>(null)
+  const openProject = (oi: number) => {
+    setActive(oi)
+    notify('project_open', t.projects.items[oi].title)
+  }
 
   return (
     <section id="work" className="section projects">
@@ -153,7 +158,7 @@ export function Projects() {
               <Reveal className="pj__media" y={40}>
                 <button
                   className="pj__open"
-                  onClick={() => setActive(oi)}
+                  onClick={() => openProject(oi)}
                   data-cursor="view"
                   aria-label={`${t.projects.viewCase}: ${it.title}`}
                 >
@@ -185,11 +190,11 @@ export function Projects() {
                 <Reveal delay={0.1}>
                   <h3
                     className="pj__name h2"
-                    onClick={() => setActive(oi)}
+                    onClick={() => openProject(oi)}
                     data-cursor="view"
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && setActive(oi)}
+                    onKeyDown={(e) => e.key === 'Enter' && openProject(oi)}
                   >
                     {it.title}
                   </h3>
@@ -209,7 +214,7 @@ export function Projects() {
 
                 <Reveal delay={0.28}>
                   <div className="pj__actions">
-                    <button className="pj__cta" onClick={() => setActive(oi)} data-cursor="view">
+                    <button className="pj__cta" onClick={() => openProject(oi)} data-cursor="view">
                       <span className="pj__cta-lbl">{t.projects.viewCase}</span>
                       <span className="pj__cta-arrow" aria-hidden>→</span>
                     </button>

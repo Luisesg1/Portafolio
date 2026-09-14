@@ -46,26 +46,36 @@ export default async function handler(req, res) {
     const country = req.headers['x-vercel-ip-country'] || ''
     const city = decodeURIComponent(req.headers['x-vercel-ip-city'] || '') || 'Desconocida'
     const body = typeof req.body === 'object' ? req.body : {}
-    let ref = (body.ref || req.headers.referer || '').toString()
-    try {
-      ref = ref ? new URL(ref).hostname.replace(/^www\./, '') : ''
-    } catch {
-      ref = ''
-    }
-    if (/luisesg\.com/i.test(ref)) ref = '' // internal navigation
-    const source = ref || 'directo'
     const time = new Date().toLocaleString('es-CL', {
       timeZone: 'America/Santiago',
       hour: '2-digit',
       minute: '2-digit',
     })
+    const where = `📍 ${city}, ${country || '??'} ${flag(country)} · ${device(ua)} · ${browser(ua)} · ⏰ ${time}`
 
-    const text =
-      `👀 *Nueva visita* — luisesg.com\n` +
-      `📍 ${city}, ${country || '??'} ${flag(country)}\n` +
-      `${device(ua)} · ${browser(ua)}\n` +
-      `🔗 ${source}\n` +
-      `⏰ ${time}`
+    let text
+    if (body.event) {
+      // high-intent action alert
+      const label = (body.label || '').toString().slice(0, 60)
+      const headline =
+        {
+          project_open: `🔥 Abrió el proyecto *${label}*`,
+          cv_download: '📄 Descargó tu CV',
+          contact_submit: '✉️ Envió el formulario de contacto',
+          whatsapp_click: '💬 Click en tu WhatsApp',
+        }[body.event] || `👉 ${body.event}${label ? ` · ${label}` : ''}`
+      text = `${headline}\n${where}`
+    } else {
+      // plain visit ping
+      let ref = (body.ref || req.headers.referer || '').toString()
+      try {
+        ref = ref ? new URL(ref).hostname.replace(/^www\./, '') : ''
+      } catch {
+        ref = ''
+      }
+      if (/luisesg\.com/i.test(ref)) ref = ''
+      text = `👀 *Nueva visita* — luisesg.com\n📍 ${city}, ${country || '??'} ${flag(country)}\n${device(ua)} · ${browser(ua)}\n🔗 ${ref || 'directo'}\n⏰ ${time}`
+    }
 
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: 'POST',
