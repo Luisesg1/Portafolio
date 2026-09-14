@@ -32,6 +32,9 @@ Thumbs.db
 # internal dev notes (kept locally, not published)
 .claude
 HANDOFF.md
+HANDOFF-*.md
+PROMPT-*.md
+CONTINUAR-*.md
 CAMBIOS.md
 CONTINUAR.md
 CONTINUAR-LIGHTBOX.md
