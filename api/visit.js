@@ -25,6 +25,19 @@ function browser(ua = '') {
   return 'Navegador'
 }
 
+// Telegram Markdown (legacy) trips on these; strip them from visitor-supplied
+// strings so a name like "Juan*" can't break formatting or inject markup.
+function clean(s = '', max = 80) {
+  return String(s).replace(/[*_`[\]]/g, '').replace(/\s+/g, ' ').trim().slice(0, max)
+}
+
+function human(seconds = 0) {
+  const s = Math.max(0, Math.round(seconds))
+  if (s < 60) return `${s}s`
+  const m = Math.floor(s / 60)
+  return `${m}m ${s % 60}s`
+}
+
 export default async function handler(req, res) {
   // never block the visitor: respond OK no matter what
   try {
@@ -45,26 +58,70 @@ export default async function handler(req, res) {
 
     const country = req.headers['x-vercel-ip-country'] || ''
     const city = decodeURIComponent(req.headers['x-vercel-ip-city'] || '') || 'Desconocida'
-    const body = typeof req.body === 'object' ? req.body : {}
-    const time = new Date().toLocaleString('es-CL', {
+    const body = typeof req.body === 'object' && req.body ? req.body : {}
+
+    // visitor-supplied context (client-side, so it's THEIR locale/time/campaign)
+    const lang = clean(body.lang, 12)
+    const visitorTime = clean(body.localTime, 12) // their own clock
+    const utm = clean(body.utm, 60)
+    const hereTime = new Date().toLocaleString('es-CL', {
       timeZone: 'America/Santiago',
       hour: '2-digit',
       minute: '2-digit',
     })
-    const where = `📍 ${city}, ${country || '??'} ${flag(country)} · ${device(ua)} · ${browser(ua)} · ⏰ ${time}`
+
+    const fl = flag(country) || '📍'
+    const place = `${city}, ${country || '??'}`
+    // one shared "where + when" footer for the action alerts
+    const footer = [
+      `${fl} ${place} · ${device(ua)} · ${browser(ua)}`,
+      lang ? `🌐 ${lang}` : '',
+      visitorTime ? `🕐 ${visitorTime} (su hora) · ${hereTime} (aquí)` : `🕐 ${hereTime}`,
+    ]
+      .filter(Boolean)
+      .join('\n')
 
     let text
-    if (body.event) {
-      // high-intent action alert
-      const label = (body.label || '').toString().slice(0, 60)
-      const headline =
-        {
-          project_open: `🔥 Abrió el proyecto *${label}*`,
-          cv_download: '📄 Descargó tu CV',
-          contact_submit: '✉️ Envió el formulario de contacto',
-          whatsapp_click: '💬 Click en tu WhatsApp',
-        }[body.event] || `👉 ${body.event}${label ? ` · ${label}` : ''}`
-      text = `${headline}\n${where}`
+    if (body.event === 'session_summary') {
+      const dur = human(body.seconds)
+      const seen = clean(body.projects, 200)
+      text = [
+        `📊 *Resumen de sesión* · luisesg.com`,
+        `${fl} ${place}`,
+        `⏱️ Estuvo ${dur}`,
+        seen ? `👁️ Vio: ${seen}` : `👁️ No abrió proyectos`,
+        `📄 CV: ${body.cv ? 'sí ✅' : 'no'}`,
+      ].join('\n')
+    } else if (body.event) {
+      // high-intent action alert, with context
+      const label = clean(body.label, 60)
+      let headline
+      switch (body.event) {
+        case 'project_open':
+          headline = `🔥 *Abrió el proyecto* — ${label || '¿?'}`
+          break
+        case 'cv_download':
+          headline = `📄🔥 *Descargó tu CV* — LEAD CALIENTE`
+          break
+        case 'contact_submit': {
+          const name = clean(body.name, 60)
+          const ptype = clean(body.ptype, 40)
+          headline = [
+            `✉️🔥 *Formulario enviado* — LEAD CALIENTE`,
+            name ? `👤 ${name}` : '',
+            ptype ? `🗂️ ${ptype}` : '',
+          ]
+            .filter(Boolean)
+            .join('\n')
+          break
+        }
+        case 'whatsapp_click':
+          headline = `💬 *Click en tu WhatsApp*`
+          break
+        default:
+          headline = `👉 ${clean(body.event, 40)}${label ? ` · ${label}` : ''}`
+      }
+      text = `${headline}\n${footer}`
     } else {
       // plain visit ping
       let ref = (body.ref || req.headers.referer || '').toString()
@@ -74,7 +131,16 @@ export default async function handler(req, res) {
         ref = ''
       }
       if (/luisesg\.com/i.test(ref)) ref = ''
-      text = `👀 *Nueva visita* — luisesg.com\n📍 ${city}, ${country || '??'} ${flag(country)}\n${device(ua)} · ${browser(ua)}\n🔗 ${ref || 'directo'}\n⏰ ${time}`
+      const returning = body.returning === 'returning'
+      const source = utm ? `📣 Campaña: ${utm}` : `🔗 ${ref || 'Directo'}`
+      text = [
+        `👀 *Nueva visita* · luisesg.com`,
+        `${fl} *${place}*`,
+        returning ? `🔁 Visitante recurrente` : `🆕 Nuevo visitante`,
+        `${device(ua)} · ${browser(ua)}${lang ? ` · 🌐 ${lang}` : ''}`,
+        source,
+        visitorTime ? `🕐 ${visitorTime} (su hora) · ${hereTime} (aquí)` : `🕐 ${hereTime}`,
+      ].join('\n')
     }
 
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {

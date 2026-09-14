@@ -64,7 +64,7 @@ function ContactForm() {
       const data = await res.json()
       if (data.success) {
         setStatus('sent')
-        notify('contact_submit')
+        notify('contact_submit', undefined, { name: name.trim(), ptype: type })
         setName('')
         setEmail('')
         setMessage('')

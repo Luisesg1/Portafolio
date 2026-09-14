@@ -13,6 +13,7 @@ import { Footer } from './components/Footer'
 import { ScrollProgress } from './components/ScrollProgress'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { CommandPalette } from './components/CommandPalette'
+import { pingVisit, initSessionSummary } from './lib/track'
 
 // Easter-egg mini-game — heavy-ish and rarely opened, so it's split out of the
 // initial bundle and only fetched when the "game:open" event fires.
@@ -38,21 +39,11 @@ import './styles/sections.css'
 
 export default function App() {
   // Notify (Telegram) on a real visit — once per session, skip localhost/bots.
-  // The endpoint is dormant unless its env vars are set on the server.
+  // The endpoint is dormant unless its env vars are set on the server. Also
+  // arms the leaving-summary beacon (what they saw / CV / time on site).
   useEffect(() => {
-    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return
-    try {
-      if (sessionStorage.getItem('v-pinged')) return
-      sessionStorage.setItem('v-pinged', '1')
-    } catch {
-      /* ignore */
-    }
-    fetch('/api/visit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ref: document.referrer || '', page: location.pathname + location.hash }),
-      keepalive: true,
-    }).catch(() => {})
+    pingVisit()
+    initSessionSummary()
   }, [])
 
   return (
