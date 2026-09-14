@@ -122,6 +122,19 @@ export default async function handler(req, res) {
       body: JSON.stringify({ chat_id: CHAT, text: lines.join('\n'), parse_mode: 'Markdown' }),
     })
 
+    // Housekeeping: prune events older than the retention window. Keeps the
+    // table small and drops old lead PII (data minimization). Best-effort.
+    const RETENTION_DAYS = 90
+    try {
+      const cutoff = new Date(Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000).toISOString()
+      await fetch(`${BASE}/rest/v1/events?created_at=lt.${cutoff}`, {
+        method: 'DELETE',
+        headers: { ...supaAuth(KEY), Prefer: 'return=minimal' },
+      })
+    } catch {
+      /* pruning must never fail the digest */
+    }
+
     return res.status(200).json({ ok: true, counted: rows.length })
   } catch {
     return res.status(200).json({ ok: true, error: true })
