@@ -180,6 +180,9 @@ export default async function handler(req, res) {
         case 'whatsapp_click':
           headline = `💬 *Click en tu WhatsApp*`
           break
+        case 'surprise_click':
+          headline = `✨ *Probó "Sorpréndeme"*`
+          break
         default:
           headline = `👉 ${clean(body.event, 40)}${label ? ` · ${label}` : ''}`
       }

@@ -5,6 +5,7 @@ import { Magnetic } from './Magnetic'
 import { FooterWordmark } from './FooterWordmark'
 import { useT } from '../i18n/i18n'
 import { scrollToY } from '../lib/scroll'
+import { notify } from '../lib/track'
 import './Footer.css'
 
 /* ---- random "surprise me" effects (cosmos palette, no emoji) ---- */
@@ -258,6 +259,8 @@ export function Footer() {
   // random full-screen cosmos effect each click
   const lastFx = useState({ i: -1 })[0]
   const surprise = (e: MouseEvent<HTMLButtonElement>) => {
+    // ping Telegram once per session (Analytics still counts every click)
+    notify('surprise_click')
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     // origin = the button itself, so the fortune line rises from here (not screen center)
     const r = e.currentTarget.getBoundingClientRect()
