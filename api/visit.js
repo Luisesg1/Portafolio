@@ -147,6 +147,14 @@ export default async function handler(req, res) {
         case 'project_open':
           headline = `🔥 *Abrió el proyecto* — ${label || '¿?'}`
           break
+        case 'demo_open': {
+          headline = `🚀 *Abrió una demo en vivo* — ${label || '¿?'}`
+          const durl = clean(body.url, 200)
+          if (durl && /^https:\/\//.test(durl)) {
+            buttons.push([{ text: '🔗 Abrir la demo', url: durl }])
+          }
+          break
+        }
         case 'cv_download':
           headline = `📄🔥 *Descargó tu CV* — LEAD CALIENTE`
           break
