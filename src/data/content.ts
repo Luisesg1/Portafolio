@@ -83,14 +83,14 @@ export const projects = [
     result:
       'Unificó la operación en un solo sistema con control de acceso por rol, dando estructura y trazabilidad a procesos que antes eran manuales.',
     repo: 'https://github.com/Luisesg1/inventario-liceo' as string,
-    demo: '' as string,
+    demo: 'https://gestion.luisesg.com' as string,
     images: [
       '/projects/gestion-1.webp',
       '/projects/gestion-2.webp',
       '/projects/gestion-3.webp',
       '/projects/gestion-4.webp',
     ] as string[],
-    wip: true,
+    wip: false,
     device: 'browser' as 'phone' | 'browser',
     screens: ['Inicio', 'Inventario', 'Tickets', 'Personal'] as string[],
   },
