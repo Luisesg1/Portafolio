@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { X, Github, Maximize2 } from 'lucide-react'
+import { X, Github, Maximize2, ExternalLink } from 'lucide-react'
 import type { projects } from '../data/content'
 import type { dict } from '../i18n/dict'
 import { scrollToId } from '../lib/scroll'
@@ -396,18 +396,32 @@ export function CaseStudy({
               <div className="cs__chapter-body">
                 <span className="meta cs__chapter-k">{labels.blocks.evidence}</span>
                 <p className="cs__chapter-v">{labels.evidenceShots}</p>
-                {project.repo && (
+                {(project.repo || project.demo) && (
                   <div className="cs__links">
-                    <a
-                      className="cs__link"
-                      href={project.repo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-cursor="link"
-                    >
-                      <Github size={16} strokeWidth={1.6} aria-hidden />
-                      {labels.viewRepo}
-                    </a>
+                    {project.demo && (
+                      <a
+                        className="cs__link"
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor="link"
+                      >
+                        <ExternalLink size={16} strokeWidth={1.6} aria-hidden />
+                        {labels.viewDemo}
+                      </a>
+                    )}
+                    {project.repo && (
+                      <a
+                        className="cs__link"
+                        href={project.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor="link"
+                      >
+                        <Github size={16} strokeWidth={1.6} aria-hidden />
+                        {labels.viewRepo}
+                      </a>
+                    )}
                   </div>
                 )}
               </div>

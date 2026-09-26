@@ -55,6 +55,7 @@ export const projects = [
     result:
       'Reemplaza el cálculo manual por un flujo consistente y repetible: menos margen de error y precios listos al instante a partir de parámetros reutilizables.',
     repo: 'https://github.com/Luisesg1/Calculadora-3D' as string,
+    demo: '' as string,
     images: [
       '/projects/calc3d-1.webp',
       '/projects/calc3d-2.webp',
@@ -82,6 +83,7 @@ export const projects = [
     result:
       'Unificó la operación en un solo sistema con control de acceso por rol, dando estructura y trazabilidad a procesos que antes eran manuales.',
     repo: 'https://github.com/Luisesg1/inventario-liceo' as string,
+    demo: '' as string,
     images: [
       '/projects/gestion-1.webp',
       '/projects/gestion-2.webp',
@@ -109,6 +111,7 @@ export const projects = [
     result:
       'Proyecto de investigación aplicada que explora cómo la tecnología puede asistir el diagnóstico agrícola de forma más rápida y objetiva.',
     repo: '' as string,
+    demo: '' as string,
     images: [
       '/projects/defca-1.webp',
       '/projects/defca-2.webp',
@@ -135,6 +138,7 @@ export const projects = [
     result:
       'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
     repo: 'https://github.com/Luisesg1/gym-app' as string,
+    demo: '' as string,
     images: [
       '/projects/beast-1.webp',
       '/projects/beast-5.webp',
@@ -163,6 +167,7 @@ export const projects = [
     result:
       'Sistema completo de punta a punta: genera cotizaciones en segundos con formato consistente, respaldo centralizado en la nube y PDF listo para enviar. Incluye modo demo sin backend.',
     repo: 'https://github.com/Luisesg1/sistema-cotizacion' as string,
+    demo: 'https://cotizacion.luisesg.com' as string,
     images: [
       '/projects/cotiza-1.webp',
       '/projects/cotiza-3.webp',

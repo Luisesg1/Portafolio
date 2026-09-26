@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useReducedMotion } from 'motion/react'
-import { Github } from 'lucide-react'
+import { Github, ExternalLink } from 'lucide-react'
 import { lazy, Suspense, useRef, useState } from 'react'
 import { Reveal, MaskLine } from './Reveal'
 import { OutlineText } from './OutlineText'
@@ -218,6 +218,19 @@ export function Projects() {
                       <span className="pj__cta-lbl">{t.projects.viewCase}</span>
                       <span className="pj__cta-arrow" aria-hidden>→</span>
                     </button>
+                    {p.demo && (
+                      <a
+                        className="pj__repo"
+                        href={p.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor="link"
+                        aria-label={`${t.projects.viewDemo}: ${it.title}`}
+                      >
+                        <ExternalLink size={15} strokeWidth={1.6} aria-hidden />
+                        <span>{t.projects.viewDemo}</span>
+                      </a>
+                    )}
                     {p.repo && (
                       <a
                         className="pj__repo"
