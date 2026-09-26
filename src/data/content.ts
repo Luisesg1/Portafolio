@@ -90,7 +90,7 @@ export const projects = [
       '/projects/gestion-3.webp',
       '/projects/gestion-4.webp',
     ] as string[],
-    wip: true,
+    wip: false,
     device: 'browser' as 'phone' | 'browser',
     screens: ['Inicio', 'Inventario', 'Tickets', 'Personal'] as string[],
   },

@@ -14,7 +14,7 @@ const CaseStudy = lazy(() => import('./CaseStudy').then((m) => ({ default: m.Cas
 // Display order (indices into `projects`) — lead with the shipped, in-production
 // flagship. Data arrays stay in their canonical order so dict copy stays aligned
 // by index; only the rendered order and the shown number derive from this.
-const ORDER = [4, 0, 1, 2, 3] as const
+const ORDER = [4, 1, 0, 2, 3] as const
 const displayNum = (originalIndex: number) =>
   String(ORDER.indexOf(originalIndex as (typeof ORDER)[number]) + 1).padStart(2, '0')
 
