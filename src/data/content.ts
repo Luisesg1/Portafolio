@@ -83,7 +83,7 @@ export const projects = [
     result:
       'Unificó la operación en un solo sistema con control de acceso por rol, dando estructura y trazabilidad a procesos que antes eran manuales.',
     repo: 'https://github.com/Luisesg1/inventario-liceo' as string,
-    demo: 'https://liceo-demo.vercel.app' as string,
+    demo: 'https://gestion.luisesg.com' as string,
     images: [
       '/projects/gestion-1.webp',
       '/projects/gestion-2.webp',
