@@ -3,6 +3,7 @@ import { X, Github, Maximize2, ExternalLink } from 'lucide-react'
 import type { projects } from '../data/content'
 import type { dict } from '../i18n/dict'
 import { scrollToId } from '../lib/scroll'
+import { notify } from '../lib/track'
 import { PhoneShowcase } from './PhoneShowcase'
 import { ProjectViewer } from './ProjectViewer'
 import './CaseStudy.css'
@@ -405,6 +406,7 @@ export function CaseStudy({
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor="link"
+                        onClick={() => notify('demo_open', text.title, { url: project.demo })}
                       >
                         <ExternalLink size={16} strokeWidth={1.6} aria-hidden />
                         {labels.viewDemo}

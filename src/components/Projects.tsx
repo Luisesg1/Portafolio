@@ -226,6 +226,7 @@ export function Projects() {
                         rel="noopener noreferrer"
                         data-cursor="link"
                         aria-label={`${t.projects.viewDemo}: ${it.title}`}
+                        onClick={() => notify('demo_open', it.title, { url: p.demo })}
                       >
                         <ExternalLink size={15} strokeWidth={1.6} aria-hidden />
                         <span>{t.projects.viewDemo}</span>
