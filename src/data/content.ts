@@ -65,6 +65,7 @@ export const projects = [
     wip: true,
     device: 'phone' as 'phone' | 'browser',
     screens: ['Inicio', 'Cotización', 'Materiales', 'Estadísticas'] as string[],
+    site: false,
   },
   {
     n: '02',
@@ -93,6 +94,7 @@ export const projects = [
     wip: false,
     device: 'browser' as 'phone' | 'browser',
     screens: ['Inicio', 'Inventario', 'Tickets', 'Personal'] as string[],
+    site: false,
   },
   {
     n: '03',
@@ -120,6 +122,7 @@ export const projects = [
     wip: true,
     device: 'browser' as 'phone' | 'browser',
     screens: ['Características', 'Por qué DEFCA', 'Nosotros'] as string[],
+    site: false,
   },
   {
     n: '04',
@@ -149,6 +152,7 @@ export const projects = [
     wip: true,
     device: 'phone' as 'phone' | 'browser',
     screens: ['Home', 'Menú', 'Dashboard', 'Coach IA', 'Records'] as string[],
+    site: false,
   },
   {
     n: '05',
@@ -178,12 +182,42 @@ export const projects = [
     wip: false,
     device: 'browser' as 'phone' | 'browser',
     screens: ['Dashboard', 'Historial', 'Clientes', 'Nueva Cotización', 'Configuración'] as string[],
+    site: false,
+  },
+  {
+    n: '06',
+    title: 'DM Running Coach',
+    category: 'Client Web',
+    desc: 'Web de ventas para un entrenador de running en Chile: el atleta completa un formulario de ingreso, paga en línea y recibe un plan personalizado de 5K o 10K.',
+    tech: ['Next.js', 'TypeScript', 'Supabase'],
+    accent: 'var(--lime)',
+    year: '2026',
+    role: 'Full Stack Developer',
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Flow', 'Vercel'],
+    problem:
+      'Un entrenador de running necesitaba vender y organizar sus asesorías en línea: elegir plan, cobrar y recibir la información de cada atleta sin depender de mensajes sueltos ni planillas.',
+    solution:
+      'Un sitio y pasarela de ventas donde el atleta elige plan (Plus o Premium 1:1, mensual o 3 meses), responde un formulario de ingreso de 9 pasos y paga con Flow (Webpay, tarjetas) o por transferencia. El entrenador gestiona todo desde un panel privado: solicitudes con estado y plazo de 48 h, estadísticas, contenido editable y blog.',
+    result:
+      'Un canal de ventas completo en producción: el atleta pasa de elegir plan a pagar en una sola sesión, y el entrenador administra solicitudes, contenido y cobros sin tocar código.',
+    repo: '' as string,
+    demo: 'https://www.diegomarianocoach.com' as string,
+    images: [
+      '/projects/dm-1.webp',
+      '/projects/dm-2.webp',
+      '/projects/dm-3.webp',
+      '/projects/dm-4.webp',
+    ] as string[],
+    wip: false,
+    device: 'browser' as 'phone' | 'browser',
+    screens: ['Portada', 'Planes', 'Formulario', 'Blog'] as string[],
+    site: true,
   },
 ] as const
 
 /** Real, non-fabricated portfolio signals. No fake client counts or metrics. */
 export const metrics = [
-  { label: 'Projects Built', value: '05', sub: 'Real, built end-to-end' },
+  { label: 'Projects Built', value: '06', sub: 'Real, built end-to-end' },
   { label: 'Focus', value: 'FULL', sub: 'Stack — front to back' },
   { label: 'Since', value: '2026', sub: 'Ingeniería · INACAP' },
   { label: 'Mode', value: 'BUILD', sub: 'Create · Learn · Iterate' },

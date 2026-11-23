@@ -409,7 +409,7 @@ export function CaseStudy({
                         onClick={() => notify('demo_open', text.title, { url: project.demo })}
                       >
                         <ExternalLink size={16} strokeWidth={1.6} aria-hidden />
-                        {labels.viewDemo}
+                        {project.site ? labels.viewSite : labels.viewDemo}
                       </a>
                     )}
                     {project.repo && (

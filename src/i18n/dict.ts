@@ -149,6 +149,7 @@ export const dict = {
       caseCta: 'Hablemos de un proyecto',
       viewRepo: 'Ver repositorio',
       viewDemo: 'Ver demo',
+      viewSite: 'Ver sitio',
       wip: 'En desarrollo',
       live: 'En producción',
       clientReal: 'Proyecto completo',
@@ -246,6 +247,29 @@ export const dict = {
             'Modo demo sin backend',
           ],
           learnings: 'El reto fue generar un PDF profesional y consistente con jsPDF, y diseñar un modo demo completo que funcione sin backend para poder mostrar el sistema.',
+        },
+        {
+          title: 'DM Running Coach',
+          desc: 'Web de ventas para un entrenador de running en Chile: el atleta completa un formulario de ingreso, paga en línea y recibe un plan personalizado de 5K o 10K.',
+          role: 'Full Stack Developer',
+          problem:
+            'Un entrenador de running necesitaba vender y organizar sus asesorías en línea: elegir plan, cobrar y recibir la información de cada atleta sin depender de mensajes sueltos ni planillas.',
+          solution:
+            'Un sitio y pasarela de ventas donde el atleta elige plan (Plus o Premium 1:1, mensual o 3 meses), responde un formulario de ingreso de 9 pasos y paga con Flow (Webpay, tarjetas) o por transferencia. El entrenador gestiona todo desde un panel privado con solicitudes, estadísticas, contenido editable y blog.',
+          result:
+            'Un canal de ventas completo en producción: el atleta pasa de elegir plan a pagar en una sola sesión, y el entrenador administra solicitudes, contenido y cobros sin tocar código.',
+          implementation:
+            'Next.js (App Router) con TypeScript y Tailwind CSS, sobre Supabase (PostgreSQL, autenticación, Edge Functions y almacenamiento). El cobro se arma con Flow: el monto se fija en el servidor y se confirma por webhook, para que no dependa del cliente. Panel de administración protegido por rol con los datos de clientes resguardados. Desplegado en Vercel.',
+          features: [
+            'Formulario de ingreso de 9 pasos con pago integrado (Flow o transferencia)',
+            'Cobro con monto fijado en el servidor y confirmación por webhook',
+            'Panel del entrenador: solicitudes con estado y plazo de 48 h, estadísticas y blog',
+            'Precios, textos y fotos editables sin tocar código',
+            'Acceso solo para administradores y datos de clientes protegidos',
+            'Modo claro/oscuro, diseño responsivo, SEO para Chile y analítica sin cookies',
+            'Pantallas: Portada, Planes, Formulario, Blog',
+          ],
+          learnings: 'Lo más interesante fue el flujo de pago: fijar el monto en el servidor y confirmar por webhook para que el cobro no dependa del cliente, manteniendo precios y contenido editables sin romper ese flujo.',
         },
       ],
     },
@@ -507,6 +531,7 @@ export const dict = {
       caseCta: "Let's talk about a project",
       viewRepo: 'View repository',
       viewDemo: 'View demo',
+      viewSite: 'View site',
       wip: 'In development',
       live: 'In production',
       clientReal: 'Completed',
@@ -604,6 +629,29 @@ export const dict = {
             'Backend-free demo mode',
           ],
           learnings: 'The challenge was generating a professional, consistent PDF with jsPDF, and designing a full demo mode that works without a backend to showcase the system.',
+        },
+        {
+          title: 'DM Running Coach',
+          desc: 'Sales website for a running coach in Chile: the athlete fills in an intake form, pays online and gets a personalized 5K or 10K plan.',
+          role: 'Full Stack Developer',
+          problem:
+            'A running coach needed to sell and organize his coaching online: choose a plan, get paid and receive each athlete’s information without relying on scattered messages or spreadsheets.',
+          solution:
+            'A sales site and checkout where the athlete picks a plan (Plus or Premium 1:1, monthly or 3 months), answers a 9-step intake form and pays with Flow (Webpay, cards) or bank transfer. The coach manages everything from a private panel with requests, stats, editable content and a blog.',
+          result:
+            'A complete sales channel in production: the athlete goes from choosing a plan to paying in a single session, and the coach manages requests, content and payments without touching code.',
+          implementation:
+            'Next.js (App Router) with TypeScript and Tailwind CSS, on Supabase (PostgreSQL, auth, Edge Functions and storage). Checkout runs on Flow: the amount is set on the server and confirmed via webhook, so it never depends on the client. Role-protected admin panel with customer data kept safe. Deployed on Vercel.',
+          features: [
+            '9-step intake form with integrated payment (Flow or bank transfer)',
+            'Server-set amount with webhook confirmation',
+            'Coach panel: requests with status and 48 h delivery window, stats and blog',
+            'Prices, copy and photos editable without touching code',
+            'Admin-only access and protected customer data',
+            'Light/dark mode, responsive design, SEO for Chile and cookieless analytics',
+            'Screens: Home, Plans, Form, Blog',
+          ],
+          learnings: 'The most interesting part was the payment flow: setting the amount on the server and confirming via webhook so the charge never depends on the client, while keeping prices and content editable without breaking that flow.',
         },
       ],
     },
