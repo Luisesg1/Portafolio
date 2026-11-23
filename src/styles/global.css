@@ -26,7 +26,7 @@
 
   /* legacy aliases (old editorial theme) */
   --coral: var(--amber);
-  --lime: var(--cyan);
+  --lime: #b6f03a;
 
   /* ---- Type ---- */
   --font-sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;

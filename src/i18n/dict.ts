@@ -149,6 +149,7 @@ export const dict = {
       caseCta: 'Hablemos de un proyecto',
       viewRepo: 'Ver repositorio',
       viewDemo: 'Ver demo',
+      viewSite: 'Ver sitio',
       wip: 'En desarrollo',
       live: 'En producción',
       clientReal: 'Proyecto completo',
@@ -159,23 +160,6 @@ export const dict = {
       zoomHint: 'Ver más grande',
       pinchHint: 'Toca para acercar',
       items: [
-        {
-          title: 'Calculadora 3D',
-          desc: 'App móvil para el cálculo de costos, precios y márgenes de productos fabricados mediante impresión 3D.',
-          role: 'Mobile Developer',
-          problem: 'Calcular el costo real de una pieza impresa en 3D es tedioso y propenso a errores: material, tiempo de máquina, energía, desgaste y margen se estimaban a mano en planillas.',
-          solution: 'Una app móvil Android que centraliza todas las variables de costeo y calcula precio y margen al instante, con parámetros reutilizables y una interfaz clara para uso diario.',
-          result: 'Reemplaza el cálculo manual por un flujo consistente y repetible: menos margen de error y precios listos al instante desde parámetros reutilizables.',
-          implementation: 'App Android nativa en Kotlin y Jetpack Compose (Material 3), con inyección de dependencias vía Hilt. El estado de costeo es reactivo: cambiar cualquier variable recalcula precio y margen al instante.',
-          features: [
-            'Cálculo por material, tiempo de máquina, energía y desgaste',
-            'Margen configurable y precio final automático',
-            'Parámetros de costeo reutilizables',
-            'Estadísticas de uso',
-            'Pantallas: Inicio, Cotización, Materiales, Estadísticas',
-          ],
-          learnings: 'Lo interesante fue modelar todas las variables de costeo en una sola fórmula clara y mantener la UI reactiva con Compose sin perder legibilidad.',
-        },
         {
           title: 'Gestión Institucional',
           desc: 'Sistema web para gestión de usuarios, roles, permisos, inventario y procesos administrativos.',
@@ -210,24 +194,6 @@ export const dict = {
           learnings: 'Lo desafiante fue aplicar visión por computador a un problema agrícola real: capturar, procesar y analizar imágenes para que el resultado fuera útil en el diagnóstico.',
         },
         {
-          title: 'Beast',
-          desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
-          role: 'Mobile Developer',
-          problem: 'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
-          solution: 'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
-          result: 'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
-          implementation: 'App construida con React + Vite y empaquetada como app Android con Capacitor; backend en Firebase (Firestore + Cloud Functions). Registra sesiones, calcula records y 1RM, detecta músculos poco trabajados e integra un coach de IA (BRUX) que analiza el historial y responde en lenguaje natural, más logros y rachas.',
-          features: [
-            'Registro de series, PRs y RPE',
-            'Cálculo de records y 1RM',
-            'Dashboard de progreso',
-            'Detección de músculos descuidados',
-            'Coach de IA (BRUX) en lenguaje natural',
-            'Logros y rachas',
-          ],
-          learnings: 'Lo más interesante fue integrar un coach de IA que interpreta el historial y responde en lenguaje natural, y modelar el volumen por músculo para calcular records de forma fiable.',
-        },
-        {
           title: 'Sistema de Cotizaciones',
           desc: 'App web para gestionar cotizaciones: clientes, cálculo automático de IVA, numeración diaria y PDF profesional con firma digital.',
           role: 'Full Stack Developer',
@@ -247,6 +213,50 @@ export const dict = {
           ],
           learnings: 'El reto fue generar un PDF profesional y consistente con jsPDF, y diseñar un modo demo completo que funcione sin backend para poder mostrar el sistema.',
         },
+        {
+          title: 'DM Running Coach',
+          desc: 'Web de ventas para un entrenador de running en Chile: el atleta completa un formulario de ingreso, paga en línea y recibe un plan personalizado de 5K o 10K.',
+          role: 'Full Stack Developer',
+          problem:
+            'Un entrenador de running necesitaba vender y organizar sus asesorías en línea: elegir plan, cobrar y recibir la información de cada atleta sin depender de mensajes sueltos ni planillas.',
+          solution:
+            'Un sitio y pasarela de ventas donde el atleta elige plan (Plus o Premium 1:1, mensual o 3 meses), responde un formulario de ingreso de 9 pasos y paga con Flow (Webpay, tarjetas) o por transferencia. El entrenador gestiona todo desde un panel privado con solicitudes, estadísticas, contenido editable y blog.',
+          result:
+            'Un canal de ventas completo en producción: el atleta pasa de elegir plan a pagar en una sola sesión, y el entrenador administra solicitudes, contenido y cobros sin tocar código.',
+          implementation:
+            'Next.js (App Router) con TypeScript y Tailwind CSS, sobre Supabase (PostgreSQL, autenticación, Edge Functions y almacenamiento). El cobro se arma con Flow: el monto se fija en el servidor y se confirma por webhook, para que no dependa del cliente. Panel de administración protegido por rol con los datos de clientes resguardados. Desplegado en Vercel.',
+          features: [
+            'Formulario de ingreso de 9 pasos con pago integrado (Flow o transferencia)',
+            'Cobro con monto fijado en el servidor y confirmación por webhook',
+            'Panel del entrenador: solicitudes con estado y plazo de 48 h, estadísticas y blog',
+            'Precios, textos y fotos editables sin tocar código',
+            'Acceso solo para administradores y datos de clientes protegidos',
+            'Modo claro/oscuro, diseño responsivo, SEO para Chile y analítica sin cookies',
+            'Pantallas: Portada, Planes, Formulario, Blog',
+          ],
+          learnings: 'Lo más interesante fue el flujo de pago: fijar el monto en el servidor y confirmar por webhook para que el cobro no dependa del cliente, manteniendo precios y contenido editables sin romper ese flujo.',
+        },
+        // Beast — en pausa (ver content.ts). Descomentar junto con su objeto y ORDER.
+        /*
+        {
+          title: 'Beast',
+          desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
+          role: 'Mobile Developer',
+          problem: 'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
+          solution: 'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
+          result: 'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
+          implementation: 'App construida con React + Vite y empaquetada como app Android con Capacitor; backend en Firebase (Firestore + Cloud Functions). Registra sesiones, calcula records y 1RM, detecta músculos poco trabajados e integra un coach de IA (BRUX) que analiza el historial y responde en lenguaje natural, más logros y rachas.',
+          features: [
+            'Registro de series, PRs y RPE',
+            'Cálculo de records y 1RM',
+            'Dashboard de progreso',
+            'Detección de músculos descuidados',
+            'Coach de IA (BRUX) en lenguaje natural',
+            'Logros y rachas',
+          ],
+          learnings: 'Lo más interesante fue integrar un coach de IA que interpreta el historial y responde en lenguaje natural, y modelar el volumen por músculo para calcular records de forma fiable.',
+        },
+        */
       ],
     },
     tech: {
@@ -507,6 +517,7 @@ export const dict = {
       caseCta: "Let's talk about a project",
       viewRepo: 'View repository',
       viewDemo: 'View demo',
+      viewSite: 'View site',
       wip: 'In development',
       live: 'In production',
       clientReal: 'Completed',
@@ -517,23 +528,6 @@ export const dict = {
       zoomHint: 'View larger',
       pinchHint: 'Tap to zoom',
       items: [
-        {
-          title: '3D Calculator',
-          desc: 'A mobile app to calculate costs, prices and margins for products made with 3D printing.',
-          role: 'Mobile Developer',
-          problem: 'Working out the real cost of a 3D-printed part is tedious and error-prone: material, machine time, energy, wear and margin were estimated by hand in spreadsheets.',
-          solution: 'An Android mobile app that centralizes every costing variable and computes price and margin instantly, with reusable parameters and a clear interface for daily use.',
-          result: 'Replaces manual calculation with a consistent, repeatable flow — less room for error and instant pricing from reusable parameters.',
-          implementation: 'A native Android app in Kotlin and Jetpack Compose (Material 3), with dependency injection via Hilt. Costing state is reactive: changing any variable instantly recomputes price and margin.',
-          features: [
-            'Cost by material, machine time, energy and wear',
-            'Configurable margin and automatic final price',
-            'Reusable costing parameters',
-            'Usage statistics',
-            'Screens: Home, Quote, Materials, Statistics',
-          ],
-          learnings: 'The interesting part was modeling every costing variable into one clear formula and keeping the Compose UI reactive without losing legibility.',
-        },
         {
           title: 'Institutional Management',
           desc: 'A web system for managing users, roles, permissions, inventory and administrative processes.',
@@ -568,24 +562,6 @@ export const dict = {
           learnings: 'The challenge was applying computer vision to a real agricultural problem — capturing, processing and analyzing images so the result was actually useful for diagnosis.',
         },
         {
-          title: 'Beast',
-          desc: 'A gym app that logs workouts, tracks records and progress, with an AI coach that analyzes your history.',
-          role: 'Mobile Developer',
-          problem: 'Tracking the gym —sets, PRs, RPE, per-muscle volume— by hand or in notes is tedious and gives no useful feedback to progress.',
-          solution: 'An Android app that logs sessions, computes records and 1RM, flags undertrained muscles and adds an AI coach (BRUX) that analyzes your history and answers in natural language, with achievements and streaks to keep you consistent.',
-          result: 'Turns workout logging into actionable data —PRs, insights and recommendations— with a gamification layer that keeps users coming back.',
-          implementation: 'Built with React + Vite and shipped as an Android app via Capacitor; a Firebase backend (Firestore + Cloud Functions). It logs sessions, computes records and 1RM, flags undertrained muscles and integrates an AI coach (BRUX) that analyzes your history and answers in natural language, plus achievements and streaks.',
-          features: [
-            'Logging of sets, PRs and RPE',
-            'Records and 1RM calculation',
-            'Progress dashboard',
-            'Undertrained-muscle detection',
-            'AI coach (BRUX) in natural language',
-            'Achievements and streaks',
-          ],
-          learnings: 'The most interesting part was integrating an AI coach that reads your history and answers in natural language, and modeling per-muscle volume to compute records reliably.',
-        },
-        {
           title: 'Quotation System',
           desc: 'A web app to manage quotes: clients, automatic tax (IVA) calculation, daily numbering and a professional PDF with digital signature.',
           role: 'Full Stack Developer',
@@ -605,6 +581,50 @@ export const dict = {
           ],
           learnings: 'The challenge was generating a professional, consistent PDF with jsPDF, and designing a full demo mode that works without a backend to showcase the system.',
         },
+        {
+          title: 'DM Running Coach',
+          desc: 'Sales website for a running coach in Chile: the athlete fills in an intake form, pays online and gets a personalized 5K or 10K plan.',
+          role: 'Full Stack Developer',
+          problem:
+            'A running coach needed to sell and organize his coaching online: choose a plan, get paid and receive each athlete’s information without relying on scattered messages or spreadsheets.',
+          solution:
+            'A sales site and checkout where the athlete picks a plan (Plus or Premium 1:1, monthly or 3 months), answers a 9-step intake form and pays with Flow (Webpay, cards) or bank transfer. The coach manages everything from a private panel with requests, stats, editable content and a blog.',
+          result:
+            'A complete sales channel in production: the athlete goes from choosing a plan to paying in a single session, and the coach manages requests, content and payments without touching code.',
+          implementation:
+            'Next.js (App Router) with TypeScript and Tailwind CSS, on Supabase (PostgreSQL, auth, Edge Functions and storage). Checkout runs on Flow: the amount is set on the server and confirmed via webhook, so it never depends on the client. Role-protected admin panel with customer data kept safe. Deployed on Vercel.',
+          features: [
+            '9-step intake form with integrated payment (Flow or bank transfer)',
+            'Server-set amount with webhook confirmation',
+            'Coach panel: requests with status and 48 h delivery window, stats and blog',
+            'Prices, copy and photos editable without touching code',
+            'Admin-only access and protected customer data',
+            'Light/dark mode, responsive design, SEO for Chile and cookieless analytics',
+            'Screens: Home, Plans, Form, Blog',
+          ],
+          learnings: 'The most interesting part was the payment flow: setting the amount on the server and confirming via webhook so the charge never depends on the client, while keeping prices and content editable without breaking that flow.',
+        },
+        // Beast — paused (see content.ts). Uncomment together with its object and ORDER.
+        /*
+        {
+          title: 'Beast',
+          desc: 'A gym app that logs workouts, tracks records and progress, with an AI coach that analyzes your history.',
+          role: 'Mobile Developer',
+          problem: 'Tracking the gym —sets, PRs, RPE, per-muscle volume— by hand or in notes is tedious and gives no useful feedback to progress.',
+          solution: 'An Android app that logs sessions, computes records and 1RM, flags undertrained muscles and adds an AI coach (BRUX) that analyzes your history and answers in natural language, with achievements and streaks to keep you consistent.',
+          result: 'Turns workout logging into actionable data —PRs, insights and recommendations— with a gamification layer that keeps users coming back.',
+          implementation: 'Built with React + Vite and shipped as an Android app via Capacitor; a Firebase backend (Firestore + Cloud Functions). It logs sessions, computes records and 1RM, flags undertrained muscles and integrates an AI coach (BRUX) that analyzes your history and answers in natural language, plus achievements and streaks.',
+          features: [
+            'Logging of sets, PRs and RPE',
+            'Records and 1RM calculation',
+            'Progress dashboard',
+            'Undertrained-muscle detection',
+            'AI coach (BRUX) in natural language',
+            'Achievements and streaks',
+          ],
+          learnings: 'The most interesting part was integrating an AI coach that reads your history and answers in natural language, and modeling per-muscle volume to compute records reliably.',
+        },
+        */
       ],
     },
     tech: {

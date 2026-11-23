@@ -14,7 +14,7 @@ const CaseStudy = lazy(() => import('./CaseStudy').then((m) => ({ default: m.Cas
 // Display order (indices into `projects`) — lead with the shipped, in-production
 // flagship. Data arrays stay in their canonical order so dict copy stays aligned
 // by index; only the rendered order and the shown number derive from this.
-const ORDER = [4, 1, 0, 2, 3] as const
+const ORDER = [3, 2, 0, 1] as const
 const displayNum = (originalIndex: number) =>
   String(ORDER.indexOf(originalIndex as (typeof ORDER)[number]) + 1).padStart(2, '0')
 
@@ -225,11 +225,11 @@ export function Projects() {
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor="link"
-                        aria-label={`${t.projects.viewDemo}: ${it.title}`}
+                        aria-label={`${p.site ? t.projects.viewSite : t.projects.viewDemo}: ${it.title}`}
                         onClick={() => notify('demo_open', it.title, { url: p.demo })}
                       >
                         <ExternalLink size={15} strokeWidth={1.6} aria-hidden />
-                        <span>{t.projects.viewDemo}</span>
+                        <span>{p.site ? t.projects.viewSite : t.projects.viewDemo}</span>
                       </a>
                     )}
                     {p.repo && (
