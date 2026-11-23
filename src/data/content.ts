@@ -39,35 +39,6 @@ export const services = [
 
 export const projects = [
   {
-    n: '01',
-    title: 'Calculadora 3D',
-    category: 'Costing System',
-    desc: 'App móvil para el cálculo de costos, precios y márgenes de productos fabricados mediante impresión 3D.',
-    tech: ['Kotlin', 'Jetpack Compose', 'Android'],
-    accent: 'var(--blue)',
-    year: '2025',
-    role: 'Mobile Developer',
-    stack: ['Kotlin', 'Jetpack Compose', 'Material 3', 'Hilt'],
-    problem:
-      'Calcular el costo real de una pieza impresa en 3D es tedioso y propenso a errores: material, tiempo de máquina, energía, desgaste y margen se estimaban a mano en planillas.',
-    solution:
-      'Una app móvil Android que centraliza todas las variables de costeo y calcula precio y margen al instante, con parámetros reutilizables y una interfaz clara pensada para uso diario.',
-    result:
-      'Reemplaza el cálculo manual por un flujo consistente y repetible: menos margen de error y precios listos al instante a partir de parámetros reutilizables.',
-    repo: 'https://github.com/Luisesg1/Calculadora-3D' as string,
-    demo: '' as string,
-    images: [
-      '/projects/calc3d-1.webp',
-      '/projects/calc3d-2.webp',
-      '/projects/calc3d-3.webp',
-      '/projects/calc3d-4.webp',
-    ] as string[],
-    wip: true,
-    device: 'phone' as 'phone' | 'browser',
-    screens: ['Inicio', 'Cotización', 'Materiales', 'Estadísticas'] as string[],
-    site: false,
-  },
-  {
     n: '02',
     title: 'Gestión Institucional',
     category: 'Web System',
@@ -122,36 +93,6 @@ export const projects = [
     wip: true,
     device: 'browser' as 'phone' | 'browser',
     screens: ['Características', 'Por qué DEFCA', 'Nosotros'] as string[],
-    site: false,
-  },
-  {
-    n: '04',
-    title: 'Beast',
-    category: 'Fitness App',
-    desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
-    tech: ['React', 'Firebase', 'IA'],
-    accent: 'var(--cyan)',
-    year: '2026',
-    role: 'Mobile Developer',
-    stack: ['React', 'Vite', 'Capacitor', 'Firebase', 'IA'],
-    problem:
-      'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
-    solution:
-      'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
-    result:
-      'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
-    repo: 'https://github.com/Luisesg1/gym-app' as string,
-    demo: '' as string,
-    images: [
-      '/projects/beast-1.webp',
-      '/projects/beast-5.webp',
-      '/projects/beast-2.webp',
-      '/projects/beast-3.webp',
-      '/projects/beast-4.webp',
-    ] as string[],
-    wip: true,
-    device: 'phone' as 'phone' | 'browser',
-    screens: ['Home', 'Menú', 'Dashboard', 'Coach IA', 'Records'] as string[],
     site: false,
   },
   {
@@ -213,11 +154,46 @@ export const projects = [
     screens: ['Portada', 'Planes', 'Formulario', 'Blog'] as string[],
     site: true,
   },
+  // Beast — en pausa: pasará a ser otra app. Para reactivarlo, descomenta este
+  // objeto, su item en dict.ts (projects.items, ES y EN) y agrégalo a ORDER en
+  // Projects.tsx. Las imágenes beast-*.webp se conservan en public/projects/.
+  /*
+  {
+    n: '04',
+    title: 'Beast',
+    category: 'Fitness App',
+    desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
+    tech: ['React', 'Firebase', 'IA'],
+    accent: 'var(--cyan)',
+    year: '2026',
+    role: 'Mobile Developer',
+    stack: ['React', 'Vite', 'Capacitor', 'Firebase', 'IA'],
+    problem:
+      'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
+    solution:
+      'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
+    result:
+      'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
+    repo: 'https://github.com/Luisesg1/gym-app' as string,
+    demo: '' as string,
+    images: [
+      '/projects/beast-1.webp',
+      '/projects/beast-5.webp',
+      '/projects/beast-2.webp',
+      '/projects/beast-3.webp',
+      '/projects/beast-4.webp',
+    ] as string[],
+    wip: true,
+    device: 'phone' as 'phone' | 'browser',
+    screens: ['Home', 'Menú', 'Dashboard', 'Coach IA', 'Records'] as string[],
+    site: false,
+  },
+  */
 ] as const
 
 /** Real, non-fabricated portfolio signals. No fake client counts or metrics. */
 export const metrics = [
-  { label: 'Projects Built', value: '06', sub: 'Real, built end-to-end' },
+  { label: 'Projects Built', value: '04', sub: 'Real, built end-to-end' },
   { label: 'Focus', value: 'FULL', sub: 'Stack — front to back' },
   { label: 'Since', value: '2026', sub: 'Ingeniería · INACAP' },
   { label: 'Mode', value: 'BUILD', sub: 'Create · Learn · Iterate' },

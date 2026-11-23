@@ -161,23 +161,6 @@ export const dict = {
       pinchHint: 'Toca para acercar',
       items: [
         {
-          title: 'Calculadora 3D',
-          desc: 'App móvil para el cálculo de costos, precios y márgenes de productos fabricados mediante impresión 3D.',
-          role: 'Mobile Developer',
-          problem: 'Calcular el costo real de una pieza impresa en 3D es tedioso y propenso a errores: material, tiempo de máquina, energía, desgaste y margen se estimaban a mano en planillas.',
-          solution: 'Una app móvil Android que centraliza todas las variables de costeo y calcula precio y margen al instante, con parámetros reutilizables y una interfaz clara para uso diario.',
-          result: 'Reemplaza el cálculo manual por un flujo consistente y repetible: menos margen de error y precios listos al instante desde parámetros reutilizables.',
-          implementation: 'App Android nativa en Kotlin y Jetpack Compose (Material 3), con inyección de dependencias vía Hilt. El estado de costeo es reactivo: cambiar cualquier variable recalcula precio y margen al instante.',
-          features: [
-            'Cálculo por material, tiempo de máquina, energía y desgaste',
-            'Margen configurable y precio final automático',
-            'Parámetros de costeo reutilizables',
-            'Estadísticas de uso',
-            'Pantallas: Inicio, Cotización, Materiales, Estadísticas',
-          ],
-          learnings: 'Lo interesante fue modelar todas las variables de costeo en una sola fórmula clara y mantener la UI reactiva con Compose sin perder legibilidad.',
-        },
-        {
           title: 'Gestión Institucional',
           desc: 'Sistema web para gestión de usuarios, roles, permisos, inventario y procesos administrativos.',
           role: 'Full Stack Developer',
@@ -209,24 +192,6 @@ export const dict = {
             'Apoyo a la decisión agronómica',
           ],
           learnings: 'Lo desafiante fue aplicar visión por computador a un problema agrícola real: capturar, procesar y analizar imágenes para que el resultado fuera útil en el diagnóstico.',
-        },
-        {
-          title: 'Beast',
-          desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
-          role: 'Mobile Developer',
-          problem: 'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
-          solution: 'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
-          result: 'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
-          implementation: 'App construida con React + Vite y empaquetada como app Android con Capacitor; backend en Firebase (Firestore + Cloud Functions). Registra sesiones, calcula records y 1RM, detecta músculos poco trabajados e integra un coach de IA (BRUX) que analiza el historial y responde en lenguaje natural, más logros y rachas.',
-          features: [
-            'Registro de series, PRs y RPE',
-            'Cálculo de records y 1RM',
-            'Dashboard de progreso',
-            'Detección de músculos descuidados',
-            'Coach de IA (BRUX) en lenguaje natural',
-            'Logros y rachas',
-          ],
-          learnings: 'Lo más interesante fue integrar un coach de IA que interpreta el historial y responde en lenguaje natural, y modelar el volumen por músculo para calcular records de forma fiable.',
         },
         {
           title: 'Sistema de Cotizaciones',
@@ -271,6 +236,27 @@ export const dict = {
           ],
           learnings: 'Lo más interesante fue el flujo de pago: fijar el monto en el servidor y confirmar por webhook para que el cobro no dependa del cliente, manteniendo precios y contenido editables sin romper ese flujo.',
         },
+        // Beast — en pausa (ver content.ts). Descomentar junto con su objeto y ORDER.
+        /*
+        {
+          title: 'Beast',
+          desc: 'App de gimnasio que registra entrenamientos, records y progreso, con un coach de IA que analiza tu historial.',
+          role: 'Mobile Developer',
+          problem: 'Llevar el control del gym —series, PRs, RPE, volumen por músculo— a mano o en notas es tedioso y no entrega retroalimentación útil para progresar.',
+          solution: 'Una app Android que registra sesiones, calcula records y 1RM, detecta músculos descuidados y suma un coach de IA (BRUX) que analiza tu historial y responde en lenguaje natural, con logros y rachas que sostienen la constancia.',
+          result: 'Convierte el registro de entrenamientos en datos accionables —PRs, insights y recomendaciones— con una capa de gamificación que mantiene al usuario volviendo.',
+          implementation: 'App construida con React + Vite y empaquetada como app Android con Capacitor; backend en Firebase (Firestore + Cloud Functions). Registra sesiones, calcula records y 1RM, detecta músculos poco trabajados e integra un coach de IA (BRUX) que analiza el historial y responde en lenguaje natural, más logros y rachas.',
+          features: [
+            'Registro de series, PRs y RPE',
+            'Cálculo de records y 1RM',
+            'Dashboard de progreso',
+            'Detección de músculos descuidados',
+            'Coach de IA (BRUX) en lenguaje natural',
+            'Logros y rachas',
+          ],
+          learnings: 'Lo más interesante fue integrar un coach de IA que interpreta el historial y responde en lenguaje natural, y modelar el volumen por músculo para calcular records de forma fiable.',
+        },
+        */
       ],
     },
     tech: {
@@ -543,23 +529,6 @@ export const dict = {
       pinchHint: 'Tap to zoom',
       items: [
         {
-          title: '3D Calculator',
-          desc: 'A mobile app to calculate costs, prices and margins for products made with 3D printing.',
-          role: 'Mobile Developer',
-          problem: 'Working out the real cost of a 3D-printed part is tedious and error-prone: material, machine time, energy, wear and margin were estimated by hand in spreadsheets.',
-          solution: 'An Android mobile app that centralizes every costing variable and computes price and margin instantly, with reusable parameters and a clear interface for daily use.',
-          result: 'Replaces manual calculation with a consistent, repeatable flow — less room for error and instant pricing from reusable parameters.',
-          implementation: 'A native Android app in Kotlin and Jetpack Compose (Material 3), with dependency injection via Hilt. Costing state is reactive: changing any variable instantly recomputes price and margin.',
-          features: [
-            'Cost by material, machine time, energy and wear',
-            'Configurable margin and automatic final price',
-            'Reusable costing parameters',
-            'Usage statistics',
-            'Screens: Home, Quote, Materials, Statistics',
-          ],
-          learnings: 'The interesting part was modeling every costing variable into one clear formula and keeping the Compose UI reactive without losing legibility.',
-        },
-        {
           title: 'Institutional Management',
           desc: 'A web system for managing users, roles, permissions, inventory and administrative processes.',
           role: 'Full Stack Developer',
@@ -591,24 +560,6 @@ export const dict = {
             'Support for agronomic decisions',
           ],
           learnings: 'The challenge was applying computer vision to a real agricultural problem — capturing, processing and analyzing images so the result was actually useful for diagnosis.',
-        },
-        {
-          title: 'Beast',
-          desc: 'A gym app that logs workouts, tracks records and progress, with an AI coach that analyzes your history.',
-          role: 'Mobile Developer',
-          problem: 'Tracking the gym —sets, PRs, RPE, per-muscle volume— by hand or in notes is tedious and gives no useful feedback to progress.',
-          solution: 'An Android app that logs sessions, computes records and 1RM, flags undertrained muscles and adds an AI coach (BRUX) that analyzes your history and answers in natural language, with achievements and streaks to keep you consistent.',
-          result: 'Turns workout logging into actionable data —PRs, insights and recommendations— with a gamification layer that keeps users coming back.',
-          implementation: 'Built with React + Vite and shipped as an Android app via Capacitor; a Firebase backend (Firestore + Cloud Functions). It logs sessions, computes records and 1RM, flags undertrained muscles and integrates an AI coach (BRUX) that analyzes your history and answers in natural language, plus achievements and streaks.',
-          features: [
-            'Logging of sets, PRs and RPE',
-            'Records and 1RM calculation',
-            'Progress dashboard',
-            'Undertrained-muscle detection',
-            'AI coach (BRUX) in natural language',
-            'Achievements and streaks',
-          ],
-          learnings: 'The most interesting part was integrating an AI coach that reads your history and answers in natural language, and modeling per-muscle volume to compute records reliably.',
         },
         {
           title: 'Quotation System',
@@ -653,6 +604,27 @@ export const dict = {
           ],
           learnings: 'The most interesting part was the payment flow: setting the amount on the server and confirming via webhook so the charge never depends on the client, while keeping prices and content editable without breaking that flow.',
         },
+        // Beast — paused (see content.ts). Uncomment together with its object and ORDER.
+        /*
+        {
+          title: 'Beast',
+          desc: 'A gym app that logs workouts, tracks records and progress, with an AI coach that analyzes your history.',
+          role: 'Mobile Developer',
+          problem: 'Tracking the gym —sets, PRs, RPE, per-muscle volume— by hand or in notes is tedious and gives no useful feedback to progress.',
+          solution: 'An Android app that logs sessions, computes records and 1RM, flags undertrained muscles and adds an AI coach (BRUX) that analyzes your history and answers in natural language, with achievements and streaks to keep you consistent.',
+          result: 'Turns workout logging into actionable data —PRs, insights and recommendations— with a gamification layer that keeps users coming back.',
+          implementation: 'Built with React + Vite and shipped as an Android app via Capacitor; a Firebase backend (Firestore + Cloud Functions). It logs sessions, computes records and 1RM, flags undertrained muscles and integrates an AI coach (BRUX) that analyzes your history and answers in natural language, plus achievements and streaks.',
+          features: [
+            'Logging of sets, PRs and RPE',
+            'Records and 1RM calculation',
+            'Progress dashboard',
+            'Undertrained-muscle detection',
+            'AI coach (BRUX) in natural language',
+            'Achievements and streaks',
+          ],
+          learnings: 'The most interesting part was integrating an AI coach that reads your history and answers in natural language, and modeling per-muscle volume to compute records reliably.',
+        },
+        */
       ],
     },
     tech: {
